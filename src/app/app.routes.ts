@@ -10,7 +10,7 @@ export const routes: Routes = [
   },
   {
     path: '',
-    // Layout principal — sidebar + navbar
+    // Layout principal — sidebar + navba
     loadComponent: () =>
       import('./shared/layout/main-layout/main-layout.component')
         .then(m => m.MainLayoutComponent),

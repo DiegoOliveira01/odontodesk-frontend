@@ -5,8 +5,8 @@ export const routes: Routes = [
   {
     path: 'login',
     loadComponent: () =>
-      import('./features/auth/login/login.component')
-        .then(m => m.LoginComponent)
+      import('./features/auth/login/login')
+        .then(m => m.Login)
   },
   {
     path: '',
@@ -19,32 +19,32 @@ export const routes: Routes = [
       {
         path: 'dashboard',
         loadComponent: () =>
-          import('./features/dashboard/dashboard.component')
-            .then(m => m.DashboardComponent)
+          import('./features/dashboard/dashboard')
+            .then(m => m.Dashboard)
       },
       {
         path: 'patients',
         loadComponent: () =>
-          import('./features/patients/patient-list/patient-list.component')
-            .then(m => m.PatientListComponent)
+          import('./features/patients/patient-list/patient-list')
+            .then(m => m.PatientList)
       },
       {
         path: 'dentists',
         loadComponent: () =>
-          import('./features/dentists/dentist-list/dentist-list.component')
-            .then(m => m.DentistListComponent)
+          import('./features/dentists/dentist-list/dentist-list')
+            .then(m => m.DentistList)
       },
       {
         path: 'procedures',
         loadComponent: () =>
-          import('./features/procedures/procedure-list/procedure-list.component')
-            .then(m => m.ProcedureListComponent)
+          import('./features/procedures/procedure-list/procedure-list')
+            .then(m => m.ProcedureList)
       },
       {
         path: 'appointments',
         loadComponent: () =>
-          import('./features/appointments/appointment-list/appointment-list.component')
-            .then(m => m.AppointmentListComponent)
+          import('./features/appointments/appointment-list/appointment-list')
+            .then(m => m.AppointmentList)
       },
       {
         path: '',

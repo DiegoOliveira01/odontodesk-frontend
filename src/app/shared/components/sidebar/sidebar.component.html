@@ -1,0 +1,49 @@
+<aside class="sidebar" [class.sidebar--collapsed]="isCollapsed()">
+
+  <!-- Logo + botão de recolher -->
+  <div class="sidebar__header">
+    @if (!isCollapsed()) {
+      <span class="sidebar__logo">🦷 OdontoDesk</span>
+    }
+    <button class="sidebar__toggle" (click)="toggleCollapse()">
+      @if (isCollapsed()) {
+        ›
+      } @else {
+        ‹
+      }
+    </button>
+  </div>
+
+  <!-- Navegação -->
+  <nav class="sidebar__nav">
+    @for (item of navItems; track item.route) {
+      
+        class="sidebar__nav-item"
+        [routerLink]="item.route"
+        routerLinkActive="sidebar__nav-item--active"
+        [title]="item.label">
+
+        <!-- Ícone sempre visível -->
+        <span class="sidebar__nav-icon">{{ item.icon }}</span>
+
+        <!-- Label só aparece quando expandida -->
+        @if (!isCollapsed()) {
+          <span class="sidebar__nav-label">{{ item.label }}</span>
+        }
+    }
+  </nav>
+
+  <!-- Logout no rodapé da sidebar -->
+  <div class="sidebar__footer">
+    <button
+      class="sidebar__logout"
+      (click)="logout()"
+      [title]="'Sair'">
+      <span class="sidebar__nav-icon">⏻</span>
+      @if (!isCollapsed()) {
+        <span>Sair</span>
+      }
+    </button>
+  </div>
+
+</aside>

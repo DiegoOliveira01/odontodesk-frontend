@@ -1,0 +1,17 @@
+<header class="navbar">
+
+  <!-- Título da página atual -->
+  <div class="navbar__title">
+    <h1>{{ pageTitle() }}</h1>
+  </div>
+
+  <!-- Informações do usuário logado -->
+  <div class="navbar__user">
+    <span class="navbar__user-role">{{ userRole() }}</span>
+    <span class="navbar__user-email">{{ userEmail() }}</span>
+    <div class="navbar__user-avatar">
+      {{ userEmail()?.charAt(0)?.toUpperCase() }}
+    </div>
+  </div>
+
+</header>

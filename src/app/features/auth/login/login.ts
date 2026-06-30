@@ -43,7 +43,7 @@ export class Login {
       },
       error: (err: HttpErrorResponse) => {
         this.isLoading.set(false);
-        if (err.status === 403) {
+        if (err.status === 401) {
           this.errorMessage.set('Email ou senha inválidos');
         } else {
           this.errorMessage.set('Erro ao conectar com o servidor');

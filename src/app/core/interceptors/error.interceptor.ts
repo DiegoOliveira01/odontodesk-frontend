@@ -13,10 +13,13 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
 
       switch (error.status) {
 
-        case 401:
-          // Token expirado ou inválido — desloga e redireciona
-          authService.logout();
-          router.navigate(['/login']);
+          case 401:
+          // Se for na rota de login, não desloga (ainda não tinha logado)
+          // Só desloga se já havia um token e ele expirou
+          if (!req.url.includes('/auth/login')) {
+            authService.logout();
+            router.navigate(['/login']);
+          }
           break;
 
         case 403:

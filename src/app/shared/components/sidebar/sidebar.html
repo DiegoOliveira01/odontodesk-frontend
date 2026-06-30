@@ -16,21 +16,17 @@
 
   <!-- Navegação -->
   <nav class="sidebar__nav">
-    @for (item of navItems; track item.route) {
-      
-        class="sidebar__nav-item"
-        [routerLink]="item.route"
-        routerLinkActive="sidebar__nav-item--active"
-        [title]="item.label">
-
-        <!-- Ícone sempre visível -->
-        <span class="sidebar__nav-icon">{{ item.icon }}</span>
-
-        <!-- Label só aparece quando expandida -->
-        @if (!isCollapsed()) {
-          <span class="sidebar__nav-label">{{ item.label }}</span>
-        }
-    }
+  @for (item of navItems; track item.route) {
+    <a class="sidebar__nav-item"
+       [routerLink]="item.route"
+       routerLinkActive="sidebar__nav-item--active"
+       [title]="item.label">
+      <span class="sidebar__nav-icon">{{ item.icon }}</span>
+      @if (!isCollapsed()) {
+        <span class="sidebar__nav-label">{{ item.label }}</span>
+      }
+    </a>
+  }
   </nav>
 
   <!-- Logout no rodapé da sidebar -->

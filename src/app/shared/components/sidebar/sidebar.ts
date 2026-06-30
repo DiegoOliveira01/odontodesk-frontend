@@ -12,9 +12,9 @@ interface NavItem {
   selector: 'app-sidebar',
   standalone: true,
   imports: [RouterLink, RouterLinkActive],
-  templateUrl: './sidebar.component.html'
+  templateUrl: './sidebar.html'
 })
-export class SidebarComponent {
+export class Sidebar {
 
   private readonly authService = inject(AuthService);
   private readonly router = inject(Router);

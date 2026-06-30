@@ -1,0 +1,58 @@
+<div class="page">
+
+  <div class="page__header">
+    <h2>{{ isEditMode() ? 'Editar Paciente' : 'Novo Paciente' }}</h2>
+    <a routerLink="/patients">Voltar</a>
+  </div>
+
+  @if (errorMessage()) {
+    <div class="form-error-box">
+      {{ errorMessage() }}
+    </div>
+  }
+
+  @if (isLoading()) {
+    <p>Carregando...</p>
+  } @else {
+
+    <form [formGroup]="patientForm" (ngSubmit)="onSubmit()">
+
+      <div class="form-group">
+        <label for="name">Nome *</label>
+        <input id="name" type="text" formControlName="name" />
+      </div>
+
+      <div class="form-group">
+        <label for="cpf">CPF *</label>
+        <input id="cpf" type="text" formControlName="cpf" maxlength="11" />
+      </div>
+
+      <div class="form-group">
+        <label for="phone">Telefone</label>
+        <input id="phone" type="text" formControlName="phone" />
+      </div>
+
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input id="email" type="email" formControlName="email" />
+      </div>
+
+      <div class="form-group">
+        <label for="birthDate">Data de Nascimento</label>
+        <input id="birthDate" type="date" formControlName="birthDate" />
+      </div>
+
+      <div class="form-group">
+        <label for="address">Endereço</label>
+        <input id="address" type="text" formControlName="address" />
+      </div>
+
+      <button type="submit" [disabled]="isLoading()">
+        {{ isEditMode() ? 'Salvar Alterações' : 'Criar Paciente' }}
+      </button>
+
+    </form>
+
+  }
+
+</div>

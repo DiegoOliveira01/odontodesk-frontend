@@ -24,10 +24,27 @@ export const routes: Routes = [
       },
       {
         path: 'patients',
-        loadComponent: () =>
-          import('./features/patients/patient-list/patient-list')
-            .then(m => m.PatientList)
-      },
+        children: [
+          {
+            path: '',
+            loadComponent: () =>
+              import('./features/patients/patient-list/patient-list')
+                .then(m => m.PatientList)
+          },
+          {
+            path: 'new',
+            loadComponent: () =>
+              import('./features/patients/patient-form/patient-form')
+                .then(m => m.PatientForm)
+          },
+          {
+            path: ':id/edit',
+            loadComponent: () =>
+              import('./features/patients/patient-form/patient-form')
+                .then(m => m.PatientForm)
+          }
+          ]
+        },
       {
         path: 'dentists',
         loadComponent: () =>

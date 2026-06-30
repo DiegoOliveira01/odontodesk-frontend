@@ -4,6 +4,5 @@ import { Component } from '@angular/core';
   selector: 'app-procedure-list',
   imports: [],
   templateUrl: './procedure-list.html',
-  styleUrl: './procedure-list.scss',
 })
 export class ProcedureList {}

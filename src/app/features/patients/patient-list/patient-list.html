@@ -1,1 +1,76 @@
-<p>patient-list works!</p>
+<div class="page">
+
+  <!-- Header da página -->
+  <div class="page__header">
+    <h2>Pacientes</h2>
+    <button class="btn btn--primary" (click)="goToNew()">
+      + Novo Paciente
+    </button>
+  </div>
+
+  <!-- Busca -->
+  <div class="page__search">
+    <input
+      type="text"
+      placeholder="Buscar por nome..."
+      [(ngModel)]="searchTerm"
+      (keyup.enter)="onSearch()" />
+    <button (click)="onSearch()">Buscar</button>
+  </div>
+
+  <!-- Loading -->
+  @if (isLoading()) {
+    <p>Carregando...</p>
+  }
+
+  <!-- Tabela -->
+  @if (!isLoading()) {
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Nome</th>
+          <th>CPF</th>
+          <th>Telefone</th>
+          <th>Email</th>
+          <th>Ações</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (patient of patients(); track patient.id) {
+          <tr>
+            <td>{{ patient.name }}</td>
+            <td>{{ patient.cpf }}</td>
+            <td>{{ patient.phone || '-' }}</td>
+            <td>{{ patient.email || '-' }}</td>
+            <td>
+              <button (click)="goToEdit(patient)">Editar</button>
+              <button (click)="confirmDelete(patient)">Excluir</button>
+            </td>
+          </tr>
+        } @empty {
+          <tr>
+            <td colspan="5">Nenhum paciente encontrado</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  }
+
+  <!-- Modal de confirmação de exclusão -->
+  @if (patientToDelete()) {
+    <div class="modal-overlay">
+      <div class="modal">
+        <h3>Confirmar exclusão</h3>
+        <p>
+          Tem certeza que deseja excluir o paciente
+          <strong>{{ patientToDelete()?.name }}</strong>?
+        </p>
+        <div class="modal__actions">
+          <button (click)="cancelDelete()">Cancelar</button>
+          <button class="btn--danger" (click)="deletePatient()">Excluir</button>
+        </div>
+      </div>
+    </div>
+  }
+
+</div>

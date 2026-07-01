@@ -1,1 +1,53 @@
-<p>dentist-form works!</p>
+<div class="page">
+
+  <div class="page__header">
+    <h2>{{ isEditMode() ? 'Editar Dentista' : 'Novo Dentista' }}</h2>
+    <a routerLink="/dentists">Voltar</a>
+  </div>
+
+  @if (errorMessage()) {
+    <div class="form-error-box">
+      {{ errorMessage() }}
+    </div>
+  }
+
+  @if (isLoading()) {
+    <p>Carregando...</p>
+  } @else {
+
+    <form [formGroup]="dentistForm" (ngSubmit)="onSubmit()">
+
+      <div class="form-group">
+        <label for="name">Nome *</label>
+        <input id="name" type="text" formControlName="name" />
+      </div>
+
+      <div class="form-group">
+        <label for="cro">CRO *</label>
+        <input id="cro" type="text" formControlName="cro" />
+      </div>
+
+      <div class="form-group">
+        <label for="specialty">Especialidade</label>
+        <input id="specialty" type="text" formControlName="specialty" />
+      </div>
+
+      <div class="form-group">
+        <label for="phone">Telefone</label>
+        <input id="phone" type="text" formControlName="phone" />
+      </div>
+
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input id="email" type="email" formControlName="email" />
+      </div>
+
+      <button type="submit" [disabled]="isLoading()">
+        {{ isEditMode() ? 'Salvar Alterações' : 'Criar Dentista' }}
+      </button>
+
+    </form>
+
+  }
+
+</div>

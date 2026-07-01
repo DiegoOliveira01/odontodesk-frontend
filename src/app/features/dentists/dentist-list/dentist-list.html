@@ -1,1 +1,78 @@
-<p>dentist-list works!</p>
+<div class="page">
+
+  <div class="page__header">
+    <h2>Dentistas</h2>
+    <button class="btn btn--primary" (click)="goToNew()">
+      + Novo Dentista
+    </button>
+  </div>
+
+  <div class="page__search">
+    <input
+      type="text"
+      placeholder="Buscar por nome..."
+      [(ngModel)]="searchTerm"
+      (keyup.enter)="onSearch()" />
+    <input
+      type="text"
+      placeholder="Filtrar por especialidade..."
+      [(ngModel)]="specialtyFilter"
+      (keyup.enter)="onSearch()" />
+    <button (click)="onSearch()">Buscar</button>
+  </div>
+
+  @if (isLoading()) {
+    <p>Carregando...</p>
+  }
+
+  @if (!isLoading()) {
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Nome</th>
+          <th>CRO</th>
+          <th>Especialidade</th>
+          <th>Telefone</th>
+          <th>Email</th>
+          <th>Ações</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (dentist of dentists(); track dentist.id) {
+          <tr>
+            <td>{{ dentist.name }}</td>
+            <td>{{ dentist.cro }}</td>
+            <td>{{ dentist.specialty || '-' }}</td>
+            <td>{{ dentist.phone || '-' }}</td>
+            <td>{{ dentist.email || '-' }}</td>
+            <td>
+              <button (click)="goToEdit(dentist)">Editar</button>
+              <button (click)="confirmDelete(dentist)">Excluir</button>
+            </td>
+          </tr>
+        } @empty {
+          <tr>
+            <td colspan="6">Nenhum dentista encontrado</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  }
+
+  @if (dentistToDelete()) {
+    <div class="modal-overlay">
+      <div class="modal">
+        <h3>Confirmar exclusão</h3>
+        <p>
+          Tem certeza que deseja excluir o dentista
+          <strong>{{ dentistToDelete()?.name }}</strong>?
+        </p>
+        <div class="modal__actions">
+          <button (click)="cancelDelete()">Cancelar</button>
+          <button class="btn--danger" (click)="deleteDentist()">Excluir</button>
+        </div>
+      </div>
+    </div>
+  }
+
+</div>

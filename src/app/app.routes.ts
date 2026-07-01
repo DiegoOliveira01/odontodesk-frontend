@@ -47,9 +47,26 @@ export const routes: Routes = [
         },
       {
         path: 'dentists',
-        loadComponent: () =>
-          import('./features/dentists/dentist-list/dentist-list')
-            .then(m => m.DentistList)
+        children: [
+          {
+            path: '',
+            loadComponent: () =>
+              import('./features/dentists/dentist-list/dentist-list')
+                .then(m => m.DentistList)
+          },
+          {
+            path: 'new',
+            loadComponent: () =>
+              import('./features/dentists/dentist-form/dentist-form')
+                .then(m => m.DentistForm)
+          },
+          {
+            path: ':id/edit',
+            loadComponent: () =>
+              import('./features/dentists/dentist-form/dentist-form')
+                .then(m => m.DentistForm)
+          }
+        ]
       },
       {
         path: 'procedures',

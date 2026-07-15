@@ -1,0 +1,98 @@
+<div class="page">
+
+  <div class="page__header">
+    <h2>{{ isEditMode() ? 'Editar Consulta' : 'Nova Consulta' }}</h2>
+    <a routerLink="/appointments">Voltar</a>
+  </div>
+
+  @if (errorMessage()) {
+    <div class="form-error-box">
+      {{ errorMessage() }}
+    </div>
+  }
+
+  @if (isLoading()) {
+    <p>Carregando...</p>
+  } @else {
+
+    <form [formGroup]="appointmentForm" (ngSubmit)="onSubmit()">
+
+      <!-- Paciente -->
+      <div class="form-group">
+        <label for="patientId">Paciente *</label>
+        <select id="patientId" formControlName="patientId">
+          <option [value]="null" disabled>Selecione um paciente</option>
+          @for (patient of patients(); track patient.id) {
+            <option [value]="patient.id">{{ patient.name }}</option>
+          }
+        </select>
+      </div>
+
+      <!-- Dentista -->
+      <div class="form-group">
+        <label for="dentistId">Dentista *</label>
+        <select id="dentistId" formControlName="dentistId">
+          <option [value]="null" disabled>Selecione um dentista</option>
+          @for (dentist of dentists(); track dentist.id) {
+            <option [value]="dentist.id">Dr(a). {{ dentist.name }}</option>
+          }
+        </select>
+      </div>
+
+      <!-- Data e hora -->
+      <div class="form-group">
+        <label for="scheduledAt">Data e Hora *</label>
+        <input id="scheduledAt" type="datetime-local" formControlName="scheduledAt" />
+      </div>
+
+      <!-- Duração -->
+      <div class="form-group">
+        <label for="durationMinutes">Duração (minutos) *</label>
+        <input id="durationMinutes" type="number" formControlName="durationMinutes" />
+      </div>
+
+      <!-- Procedimentos — checkboxes -->
+      <div class="form-group">
+        <label>Procedimentos</label>
+
+        <div formArrayName="procedures" class="procedures-checklist">
+          @for (procGroup of proceduresArray.controls; track $index) {
+            <div [formGroupName]="$index" class="procedure-item">
+
+              <label class="procedure-item__checkbox">
+                <input type="checkbox" formControlName="selected" />
+                {{ procedures()[$index].name }}
+                @if (procedures()[$index].price) {
+                  — R$ {{ procedures()[$index].price }}
+                }
+              </label>
+
+              <!-- Quantidade só faz sentido se o checkbox estiver marcado -->
+              @if (procGroup.get('selected')?.value) {
+                <input
+                  type="number"
+                  min="1"
+                  formControlName="quantity"
+                  class="procedure-item__quantity" />
+              }
+
+            </div>
+          }
+        </div>
+      </div>
+
+      <!-- Observações -->
+      <div class="form-group">
+        <label for="notes">Observações</label>
+        <textarea id="notes" formControlName="notes"></textarea>
+      </div>
+
+      <button type="submit" [disabled]="isLoading()">
+        {{ isEditMode() ? 'Salvar Alterações' : 'Agendar Consulta' }}
+      </button>
+
+    </form>
+
+  }
+
+</div>

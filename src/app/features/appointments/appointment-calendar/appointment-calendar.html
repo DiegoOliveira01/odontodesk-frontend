@@ -1,0 +1,74 @@
+<div class="page">
+
+  <div class="page__header">
+    <h2>Consultas</h2>
+    <a routerLink="/appointments/new" class="btn btn--primary">
+      + Nova Consulta
+    </a>
+  </div>
+
+  <!-- Legenda de cores -->
+  <div class="calendar-legend">
+    <span><i class="dot" style="background:#3b82f6"></i> Agendada</span>
+    <span><i class="dot" style="background:#10b981"></i> Confirmada</span>
+    <span><i class="dot" style="background:#ef4444"></i> Cancelada</span>
+    <span><i class="dot" style="background:#6b7280"></i> Concluída</span>
+  </div>
+
+  <!-- Calendário -->
+  <full-calendar [options]="calendarOptions" />
+
+  <!-- Modal de detalhes da consulta -->
+  @if (selectedAppointment(); as appt) {
+    <div class="modal-overlay">
+      <div class="modal">
+
+        <h3>Detalhes da Consulta</h3>
+
+        <p><strong>Paciente:</strong> {{ appt.patient.name }}</p>
+        <p><strong>Dentista:</strong> Dr(a). {{ appt.dentist.name }}</p>
+        <p><strong>Data:</strong> {{ appt.scheduledAt | date:'dd/MM/yyyy HH:mm' }}</p>
+        <p><strong>Duração:</strong> {{ appt.durationMinutes }} minutos</p>
+
+        @if (appt.procedures.length > 0) {
+          <p><strong>Procedimentos:</strong></p>
+          <ul>
+            @for (ap of appt.procedures; track ap.id) {
+              <li>{{ ap.procedure.name }} (x{{ ap.quantity }})</li>
+            }
+          </ul>
+        }
+
+        @if (appt.notes) {
+          <p><strong>Observações:</strong> {{ appt.notes }}</p>
+        }
+
+        <!-- Dropdown de status editável -->
+        <div class="form-group">
+          <label for="status">Status</label>
+          <select
+            id="status"
+            [ngModel]="appt.status"
+            (ngModelChange)="onStatusChange($event)"
+            [disabled]="isUpdatingStatus()">
+            @for (status of statusOptions; track status) {
+              <option [value]="status">{{ status }}</option>
+            }
+          </select>
+        </div>
+
+        @if (statusError()) {
+          <p class="form-error">{{ statusError() }}</p>
+        }
+
+        <div class="modal__actions">
+          <button (click)="closeModal()">Fechar</button>
+          <button (click)="goToEdit()">Editar</button>
+          <button class="btn--danger" (click)="deleteAppointment()">Excluir</button>
+        </div>
+
+      </div>
+    </div>
+  }
+
+</div>

@@ -93,9 +93,26 @@ export const routes: Routes = [
       },
       {
         path: 'appointments',
-        loadComponent: () =>
-          import('./features/appointments/appointment-list/appointment-list')
-            .then(m => m.AppointmentList)
+        children: [
+          {
+            path: '',
+            loadComponent: () =>
+              import('./features/appointments/appointment-calendar/appointment-calendar')
+                .then(m => m.AppointmentCalendar)
+          },
+          {
+            path: 'new',
+            loadComponent: () =>
+              import('./features/appointments/appointment-form/appointment-form')
+                .then(m => m.AppointmentForm)
+          },
+          {
+            path: ':id/edit',
+            loadComponent: () =>
+              import('./features/appointments/appointment-form/appointment-form')
+                .then(m => m.AppointmentForm)
+          }
+        ]
       },
       {
         path: '',

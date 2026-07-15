@@ -70,9 +70,26 @@ export const routes: Routes = [
       },
       {
         path: 'procedures',
-        loadComponent: () =>
-          import('./features/procedures/procedure-list/procedure-list')
-            .then(m => m.ProcedureList)
+        children: [
+          {
+            path: '',
+            loadComponent: () =>
+              import('./features/procedures/procedure-list/procedure-list')
+                .then(m => m.ProcedureList)
+          },
+          {
+            path: 'new',
+            loadComponent: () =>
+              import('./features/procedures/procedure-form/procedure-form')
+                .then(m => m.ProcedureForm)
+          },
+          {
+            path: ':id/edit',
+            loadComponent: () =>
+              import('./features/procedures/procedure-form/procedure-form')
+                .then(m => m.ProcedureForm)
+          }
+        ]
       },
       {
         path: 'appointments',

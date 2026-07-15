@@ -1,1 +1,71 @@
-<p>procedure-list works!</p>
+<div class="page">
+
+  <div class="page__header">
+    <h2>Procedimentos</h2>
+    <button class="btn btn--primary" (click)="goToNew()">
+      + Novo Procedimento
+    </button>
+  </div>
+
+  <div class="page__search">
+    <input
+      type="text"
+      placeholder="Buscar por nome..."
+      [(ngModel)]="searchTerm"
+      (keyup.enter)="onSearch()" />
+    <button (click)="onSearch()">Buscar</button>
+  </div>
+
+  @if (isLoading()) {
+    <p>Carregando...</p>
+  }
+
+  @if (!isLoading()) {
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Nome</th>
+          <th>Descrição</th>
+          <th>Duração (min)</th>
+          <th>Preço</th>
+          <th>Ações</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (procedure of procedures(); track procedure.id) {
+          <tr>
+            <td>{{ procedure.name }}</td>
+            <td>{{ procedure.description || '-' }}</td>
+            <td>{{ procedure.estimatedDurationMinutes || '-' }}</td>
+            <td>{{ procedure.price ? ('R$ ' + procedure.price) : '-' }}</td>
+            <td>
+              <button (click)="goToEdit(procedure)">Editar</button>
+              <button (click)="confirmDelete(procedure)">Excluir</button>
+            </td>
+          </tr>
+        } @empty {
+          <tr>
+            <td colspan="5">Nenhum procedimento encontrado</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  }
+
+  @if (procedureToDelete()) {
+    <div class="modal-overlay">
+      <div class="modal">
+        <h3>Confirmar exclusão</h3>
+        <p>
+          Tem certeza que deseja excluir o procedimento
+          <strong>{{ procedureToDelete()?.name }}</strong>?
+        </p>
+        <div class="modal__actions">
+          <button (click)="cancelDelete()">Cancelar</button>
+          <button class="btn--danger" (click)="deleteProcedure()">Excluir</button>
+        </div>
+      </div>
+    </div>
+  }
+
+</div>

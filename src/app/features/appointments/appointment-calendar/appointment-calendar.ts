@@ -2,6 +2,7 @@ import { Component, inject, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
+import { DatePipe } from '@angular/common';
 import { FullCalendarModule } from '@fullcalendar/angular';
 import { CalendarOptions, EventClickArg, DateSelectArg } from '@fullcalendar/core';
 import dayGridPlugin from '@fullcalendar/daygrid';
@@ -12,16 +13,16 @@ import { Appointment, AppointmentStatus } from '../../../core/models/appointment
 
 // Mapeia cada status para uma cor — usado nos eventos do calendário
 const STATUS_COLORS: Record<AppointmentStatus, string> = {
-  AGENDADA: '#3b82f6',    // azul
-  CONFIRMADA: '#10b981',  // verde
-  CANCELADA: '#ef4444',   // vermelho
-  CONCLUIDA: '#6b7280',   // cinza
+  AGENDADA: '#307dfa',    // azul
+  CONFIRMADA: '#0abd81',  // verde
+  CANCELADA: '#e73434',   // vermelho
+  CONCLUIDA: '#848b9b',   // cinza
 };
 
 @Component({
   selector: 'app-appointment-calendar',
   standalone: true,
-  imports: [FullCalendarModule, FormsModule, RouterLink],
+  imports: [FullCalendarModule, FormsModule, RouterLink, DatePipe],
   templateUrl: './appointment-calendar.html'
 })
 export class AppointmentCalendar {

@@ -22,13 +22,13 @@
   <nav class="flex-1 px-3 py-4 space-y-1">
     @for (item of navItems; track item.route) {
       
-        [routerLink]="item.route"
+        <a [routerLink]="item.route"
         routerLinkActive="bg-primary-500 text-white shadow-sm"
         [routerLinkActiveOptions]="{exact: false}"
         [title]="item.label"
         class="flex items-center gap-3 px-3 py-2.5 rounded-full text-sm font-medium
-               text-gray-600 hover:bg-primary-50 hover:text-primary-700
-               transition-colors">
+              text-gray-600 hover:bg-primary-50 hover:text-primary-700
+              transition-colors">
         <span class="text-lg w-5 text-center shrink-0">
           @switch (item.icon) {
             @case ('grid') { ▦ }

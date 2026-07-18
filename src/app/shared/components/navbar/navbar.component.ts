@@ -3,12 +3,11 @@ import { Router, NavigationEnd } from '@angular/router';
 import { AuthService } from '../../../core/services/auth-service';
 import { filter, map } from 'rxjs';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { AsyncPipe } from '@angular/common';
 
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [AsyncPipe],
+  imports: [],
   templateUrl: './navbar.component.html'
 })
 export class NavbarComponent {

@@ -1,41 +1,58 @@
-<aside class="sidebar" [class.sidebar--collapsed]="isCollapsed()">
+<aside
+  class="h-screen bg-white border-r border-app-border flex flex-col transition-all duration-300"
+  [class.w-64]="!isCollapsed()"
+  [class.w-20]="isCollapsed()">
 
   <!-- Logo + botão de recolher -->
-  <div class="sidebar__header">
+  <div class="h-16 flex items-center justify-between px-4 border-b border-app-border">
     @if (!isCollapsed()) {
-      <span class="sidebar__logo">🦷 OdontoDesk</span>
+      <span class="font-display font-bold text-lg text-primary-700 flex items-center gap-2">
+        <span class="text-2xl">🦷</span> OdontoDesk
+      </span>
     }
-    <button class="sidebar__toggle" (click)="toggleCollapse()">
-      @if (isCollapsed()) {
-        ›
-      } @else {
-        ‹
-      }
+    <button
+      (click)="toggleCollapse()"
+      class="w-8 h-8 flex items-center justify-center rounded-lg text-gray-400
+             hover:bg-primary-50 hover:text-primary-600 transition-colors">
+      @if (isCollapsed()) { › } @else { ‹ }
     </button>
   </div>
 
   <!-- Navegação -->
-  <nav class="sidebar__nav">
-  @for (item of navItems; track item.route) {
-    <a class="sidebar__nav-item"
-       [routerLink]="item.route"
-       routerLinkActive="sidebar__nav-item--active"
-       [title]="item.label">
-      <span class="sidebar__nav-icon">{{ item.icon }}</span>
-      @if (!isCollapsed()) {
-        <span class="sidebar__nav-label">{{ item.label }}</span>
-      }
-    </a>
-  }
+  <nav class="flex-1 px-3 py-4 space-y-1">
+    @for (item of navItems; track item.route) {
+      
+        [routerLink]="item.route"
+        routerLinkActive="bg-primary-500 text-white shadow-sm"
+        [routerLinkActiveOptions]="{exact: false}"
+        [title]="item.label"
+        class="flex items-center gap-3 px-3 py-2.5 rounded-full text-sm font-medium
+               text-gray-600 hover:bg-primary-50 hover:text-primary-700
+               transition-colors">
+        <span class="text-lg w-5 text-center shrink-0">
+          @switch (item.icon) {
+            @case ('grid') { ▦ }
+            @case ('users') { 👥 }
+            @case ('user-check') { 🩺 }
+            @case ('clipboard') { 📋 }
+            @case ('calendar') { 📅 }
+          }
+        </span>
+        @if (!isCollapsed()) {
+          <span>{{ item.label }}</span>
+        }
+      </a>
+    }
   </nav>
 
-  <!-- Logout no rodapé da sidebar -->
-  <div class="sidebar__footer">
+  <!-- Logout -->
+  <div class="px-3 py-4 border-t border-app-border">
     <button
-      class="sidebar__logout"
       (click)="logout()"
-      [title]="'Sair'">
-      <span class="sidebar__nav-icon">⏻</span>
+      [title]="'Sair'"
+      class="w-full flex items-center gap-3 px-3 py-2.5 rounded-full text-sm font-medium
+             text-gray-500 hover:bg-red-50 hover:text-red-600 transition-colors">
+      <span class="text-lg w-5 text-center shrink-0">⏻</span>
       @if (!isCollapsed()) {
         <span>Sair</span>
       }

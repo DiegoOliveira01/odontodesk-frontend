@@ -59,7 +59,7 @@ export class PatientForm implements OnInit {
       },
       error: () => {
         this.isLoading.set(false);
-        this.errorMessage.set('Paciente não encontrado');
+        this.errorMessage.set('Paciente não encontrado.');
       }
     });
   }

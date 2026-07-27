@@ -91,7 +91,7 @@ export class PatientForm implements OnInit {
           const firstError = Object.values(err.error.fieldErrors)[0];
           this.errorMessage.set(firstError as string);
         } else {
-          this.errorMessage.set('Erro ao salvar paciente');
+          this.errorMessage.set('Erro ao salvar paciente!');
         }
       }
     });

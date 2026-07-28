@@ -1,0 +1,60 @@
+::ng-deep {
+  .fc {
+    font-family: var(--font-sans, 'Inter', sans-serif);
+  }
+
+  .fc-toolbar-title {
+    font-family: var(--font-display, 'Manrope', sans-serif);
+    font-weight: 700;
+    color: #16262A;
+    font-size: 1.25rem;
+  }
+
+  .fc-button {
+    background-color: white !important;
+    border: 1px solid #DCE8E6 !important;
+    color: #16262A !important;
+    box-shadow: none !important;
+    text-transform: capitalize;
+  }
+
+  .fc-button:hover {
+    background-color: #F0FAF9 !important;
+  }
+
+  .fc-button-active,
+  .fc-button-primary:not(:disabled).fc-button-active {
+    background-color: #159895 !important;
+    border-color: #159895 !important;
+    color: white !important;
+  }
+
+  .fc-today-button {
+    text-transform: none;
+  }
+
+  .fc-col-header-cell {
+    background-color: #F0FAF9;
+    color: #0A4F4E;
+    font-weight: 600;
+    font-size: 0.8rem;
+    padding: 8px 0;
+  }
+
+  .fc-timegrid-slot-label {
+    font-size: 0.75rem;
+    color: #6b7280;
+  }
+
+  .fc-event {
+    border-radius: 6px;
+    border: none;
+    padding: 2px 4px;
+    font-size: 0.75rem;
+    cursor: pointer;
+  }
+
+  .fc-day-today {
+    background-color: #F0FAF9 !important;
+  }
+}

@@ -1,56 +1,74 @@
-<div class="page">
+<div class="max-w-6xl mx-auto">
 
-  <div class="page__header">
-    <h2>Consultas</h2>
-    <a routerLink="/appointments/new" class="btn btn--primary">
+  <div class="flex items-center justify-between mb-6">
+    <h2 class="font-display font-bold text-2xl text-ink">Consultas</h2>
+    <a routerLink="/appointments/new"
+       class="bg-primary-500 hover:bg-primary-600 text-white font-semibold text-sm
+              rounded-lg px-4 py-2.5 transition-colors">
       + Nova Consulta
     </a>
   </div>
 
   <!-- Legenda de cores -->
-  <div class="calendar-legend">
-    <span><i class="dot" style="background:#3b82f6"></i> Agendada</span>
-    <span><i class="dot" style="background:#10b981"></i> Confirmada</span>
-    <span><i class="dot" style="background:#ef4444"></i> Cancelada</span>
-    <span><i class="dot" style="background:#6b7280"></i> Concluída</span>
+  <div class="flex gap-5 mb-4 text-sm text-gray-600">
+    <span class="flex items-center gap-2">
+      <i class="w-2.5 h-2.5 rounded-full inline-block" style="background:#3b82f6"></i> Agendada
+    </span>
+    <span class="flex items-center gap-2">
+      <i class="w-2.5 h-2.5 rounded-full inline-block" style="background:#10b981"></i> Confirmada
+    </span>
+    <span class="flex items-center gap-2">
+      <i class="w-2.5 h-2.5 rounded-full inline-block" style="background:#ef4444"></i> Cancelada
+    </span>
+    <span class="flex items-center gap-2">
+      <i class="w-2.5 h-2.5 rounded-full inline-block" style="background:#6b7280"></i> Concluída
+    </span>
   </div>
 
-  <!-- Calendário -->
-  <full-calendar [options]="calendarOptions" />
+  <!-- Card que envolve o calendário -->
+  <div class="bg-white rounded-xl border border-app-border p-4">
+    <full-calendar [options]="calendarOptions" />
+  </div>
 
-  <!-- Modal de detalhes da consulta -->
+  <!-- Modal de detalhes -->
   @if (selectedAppointment(); as appt) {
-    <div class="modal-overlay">
-      <div class="modal">
+    <div class="fixed inset-0 bg-black/40 flex items-center justify-center z-50 p-4">
+      <div class="bg-white rounded-xl p-6 w-full max-w-md shadow-lg">
 
-        <h3>Detalhes da Consulta</h3>
+        <h3 class="font-display font-bold text-lg text-ink mb-4">Detalhes da Consulta</h3>
 
-        <p><strong>Paciente:</strong> {{ appt.patient.name }}</p>
-        <p><strong>Dentista:</strong> Dr(a). {{ appt.dentist.name }}</p>
-        <p><strong>Data:</strong> {{ appt.scheduledAt | date:'dd/MM/yyyy HH:mm' }}</p>
-        <p><strong>Duração:</strong> {{ appt.durationMinutes }} minutos</p>
+        <div class="space-y-2 text-sm mb-4">
+          <p><span class="text-gray-500">Paciente:</span> <span class="font-medium text-ink">{{ appt.patient.name }}</span></p>
+          <p><span class="text-gray-500">Dentista:</span> <span class="font-medium text-ink">Dr(a). {{ appt.dentist.name }}</span></p>
+          <p><span class="text-gray-500">Data:</span> <span class="font-medium text-ink">{{ appt.scheduledAt | date:'dd/MM/yyyy HH:mm' }}</span></p>
+          <p><span class="text-gray-500">Duração:</span> <span class="font-medium text-ink">{{ appt.durationMinutes }} minutos</span></p>
+        </div>
 
         @if (appt.procedures.length > 0) {
-          <p><strong>Procedimentos:</strong></p>
-          <ul>
-            @for (ap of appt.procedures; track ap.id) {
-              <li>{{ ap.procedure.name }} (x{{ ap.quantity }})</li>
-            }
-          </ul>
+          <div class="mb-4">
+            <p class="text-sm text-gray-500 mb-1">Procedimentos:</p>
+            <ul class="text-sm text-ink space-y-0.5">
+              @for (ap of appt.procedures; track ap.id) {
+                <li>• {{ ap.procedure.name }} (x{{ ap.quantity }})</li>
+              }
+            </ul>
+          </div>
         }
 
         @if (appt.notes) {
-          <p><strong>Observações:</strong> {{ appt.notes }}</p>
+          <p class="text-sm mb-4"><span class="text-gray-500">Observações:</span> {{ appt.notes }}</p>
         }
 
-        <!-- Dropdown de status editável -->
-        <div class="form-group">
-          <label for="status">Status</label>
+        <!-- Status -->
+        <div class="mb-2">
+          <label for="status" class="block text-sm font-medium text-ink mb-1.5">Status</label>
           <select
             id="status"
             [ngModel]="appt.status"
             (ngModelChange)="onStatusChange($event)"
-            [disabled]="isUpdatingStatus()">
+            [disabled]="isUpdatingStatus()"
+            class="w-full rounded-lg border border-app-border px-4 py-2.5 text-sm
+                   focus:outline-none focus:ring-2 focus:ring-primary-300 focus:border-primary-500">
             @for (status of statusOptions; track status) {
               <option [value]="status">{{ status }}</option>
             }
@@ -58,13 +76,22 @@
         </div>
 
         @if (statusError()) {
-          <p class="form-error">{{ statusError() }}</p>
+          <p class="text-sm text-red-600 mb-2">{{ statusError() }}</p>
         }
 
-        <div class="modal__actions">
-          <button (click)="closeModal()">Fechar</button>
-          <button (click)="goToEdit()">Editar</button>
-          <button class="btn--danger" (click)="deleteAppointment()">Excluir</button>
+        <div class="flex justify-end gap-3 mt-6">
+          <button (click)="closeModal()"
+                  class="px-4 py-2 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-100">
+            Fechar
+          </button>
+          <button (click)="goToEdit()"
+                  class="px-4 py-2 rounded-lg text-sm font-medium text-primary-600 hover:bg-primary-50">
+            Editar
+          </button>
+          <button (click)="deleteAppointment()"
+                  class="px-4 py-2 rounded-lg text-sm font-semibold text-white bg-red-500 hover:bg-red-600">
+            Excluir
+          </button>
         </div>
 
       </div>

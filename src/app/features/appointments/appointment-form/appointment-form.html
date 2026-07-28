@@ -1,79 +1,92 @@
-<div class="page">
+<div class="max-w-3xl mx-auto">
 
-  <div class="page__header">
-    <h2>{{ isEditMode() ? 'Editar Consulta' : 'Nova Consulta' }}</h2>
-    <a routerLink="/appointments">Voltar</a>
+  <div class="flex items-center justify-between mb-6">
+    <h2 class="font-display font-bold text-2xl text-ink">
+      {{ isEditMode() ? 'Editar Consulta' : 'Nova Consulta' }}
+    </h2>
+    <a routerLink="/appointments" class="text-sm text-primary-600 hover:text-primary-700 font-medium">← Voltar</a>
   </div>
 
   @if (errorMessage()) {
-    <div class="form-error-box">
+    <div class="bg-red-50 border border-red-200 text-red-700 text-sm rounded-lg px-4 py-3 mb-6">
       {{ errorMessage() }}
     </div>
   }
 
   @if (isLoading()) {
-    <p>Carregando...</p>
+    <p class="text-gray-500 text-sm">Carregando...</p>
   } @else {
 
-    <form [formGroup]="appointmentForm" (ngSubmit)="onSubmit()">
+    <form [formGroup]="appointmentForm" (ngSubmit)="onSubmit()"
+          class="bg-white rounded-xl border border-app-border p-6 space-y-5">
 
-      <!-- Paciente -->
-      <div class="form-group">
-        <label for="patientId">Paciente *</label>
-        <select id="patientId" formControlName="patientId">
-          <option [value]="null" disabled>Selecione um paciente</option>
-          @for (patient of patients(); track patient.id) {
-            <option [value]="patient.id">{{ patient.name }}</option>
-          }
-        </select>
+      <div class="grid grid-cols-2 gap-4">
+        <div>
+          <label for="patientId" class="block text-sm font-medium text-ink mb-1.5">Paciente *</label>
+          <select id="patientId" formControlName="patientId"
+                  class="w-full rounded-lg border border-app-border px-4 py-2.5 text-sm
+                         focus:outline-none focus:ring-2 focus:ring-primary-300 focus:border-primary-500">
+            <option [value]="null" disabled>Selecione um paciente</option>
+            @for (patient of patients(); track patient.id) {
+              <option [value]="patient.id">{{ patient.name }}</option>
+            }
+          </select>
+        </div>
+
+        <div>
+          <label for="dentistId" class="block text-sm font-medium text-ink mb-1.5">Dentista *</label>
+          <select id="dentistId" formControlName="dentistId"
+                  class="w-full rounded-lg border border-app-border px-4 py-2.5 text-sm
+                         focus:outline-none focus:ring-2 focus:ring-primary-300 focus:border-primary-500">
+            <option [value]="null" disabled>Selecione um dentista</option>
+            @for (dentist of dentists(); track dentist.id) {
+              <option [value]="dentist.id">Dr(a). {{ dentist.name }}</option>
+            }
+          </select>
+        </div>
       </div>
 
-      <!-- Dentista -->
-      <div class="form-group">
-        <label for="dentistId">Dentista *</label>
-        <select id="dentistId" formControlName="dentistId">
-          <option [value]="null" disabled>Selecione um dentista</option>
-          @for (dentist of dentists(); track dentist.id) {
-            <option [value]="dentist.id">Dr(a). {{ dentist.name }}</option>
-          }
-        </select>
+      <div class="grid grid-cols-2 gap-4">
+        <div>
+          <label for="scheduledAt" class="block text-sm font-medium text-ink mb-1.5">Data e Hora *</label>
+          <input id="scheduledAt" type="datetime-local" formControlName="scheduledAt"
+                 class="w-full rounded-lg border border-app-border px-4 py-2.5 text-sm
+                        focus:outline-none focus:ring-2 focus:ring-primary-300 focus:border-primary-500" />
+        </div>
+        <div>
+          <label for="durationMinutes" class="block text-sm font-medium text-ink mb-1.5">Duração (minutos) *</label>
+          <input id="durationMinutes" type="number" formControlName="durationMinutes"
+                 class="w-full rounded-lg border border-app-border px-4 py-2.5 text-sm
+                        focus:outline-none focus:ring-2 focus:ring-primary-300 focus:border-primary-500" />
+        </div>
       </div>
 
-      <!-- Data e hora -->
-      <div class="form-group">
-        <label for="scheduledAt">Data e Hora *</label>
-        <input id="scheduledAt" type="datetime-local" formControlName="scheduledAt" />
-      </div>
+      <!-- Procedimentos -->
+      <div>
+        <label class="block text-sm font-medium text-ink mb-2">Procedimentos</label>
 
-      <!-- Duração -->
-      <div class="form-group">
-        <label for="durationMinutes">Duração (minutos) *</label>
-        <input id="durationMinutes" type="number" formControlName="durationMinutes" />
-      </div>
-
-      <!-- Procedimentos — checkboxes -->
-      <div class="form-group">
-        <label>Procedimentos</label>
-
-        <div formArrayName="procedures" class="procedures-checklist">
+        <div formArrayName="procedures" class="border border-app-border rounded-lg divide-y divide-app-border">
           @for (procGroup of proceduresArray.controls; track $index) {
-            <div [formGroupName]="$index" class="procedure-item">
+            <div [formGroupName]="$index" class="flex items-center justify-between px-4 py-3">
 
-              <label class="procedure-item__checkbox">
-                <input type="checkbox" formControlName="selected" />
-                {{ procedures()[$index].name }}
-                @if (procedures()[$index].price) {
-                  — R$ {{ procedures()[$index].price }}
-                }
+              <label class="flex items-center gap-3 text-sm text-ink cursor-pointer">
+                <input type="checkbox" formControlName="selected"
+                       class="w-4 h-4 rounded border-app-border text-primary-500 focus:ring-primary-300" />
+                <span>
+                  {{ procedures()[$index].name }}
+                  @if (procedures()[$index].price) {
+                    <span class="text-gray-400"> — R$ {{ procedures()[$index].price }}</span>
+                  }
+                </span>
               </label>
 
-              <!-- Quantidade só faz sentido se o checkbox estiver marcado -->
               @if (procGroup.get('selected')?.value) {
                 <input
                   type="number"
                   min="1"
                   formControlName="quantity"
-                  class="procedure-item__quantity" />
+                  class="w-16 rounded-lg border border-app-border px-2 py-1 text-sm text-center
+                         focus:outline-none focus:ring-2 focus:ring-primary-300 focus:border-primary-500" />
               }
 
             </div>
@@ -81,15 +94,20 @@
         </div>
       </div>
 
-      <!-- Observações -->
-      <div class="form-group">
-        <label for="notes">Observações</label>
-        <textarea id="notes" formControlName="notes"></textarea>
+      <div>
+        <label for="notes" class="block text-sm font-medium text-ink mb-1.5">Observações</label>
+        <textarea id="notes" formControlName="notes" rows="3"
+                  class="w-full rounded-lg border border-app-border px-4 py-2.5 text-sm
+                         focus:outline-none focus:ring-2 focus:ring-primary-300 focus:border-primary-500"></textarea>
       </div>
 
-      <button type="submit" [disabled]="isLoading()">
-        {{ isEditMode() ? 'Salvar Alterações' : 'Agendar Consulta' }}
-      </button>
+      <div class="pt-2">
+        <button type="submit" [disabled]="isLoading()"
+                class="bg-primary-500 hover:bg-primary-600 disabled:opacity-60
+                       text-white font-semibold text-sm rounded-lg px-6 py-2.5 transition-colors">
+          {{ isEditMode() ? 'Salvar Alterações' : 'Agendar Consulta' }}
+        </button>
+      </div>
 
     </form>
 

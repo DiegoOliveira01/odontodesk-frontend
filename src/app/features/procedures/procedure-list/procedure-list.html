@@ -1,68 +1,81 @@
-<div class="page">
+<div class="max-w-6xl mx-auto">
 
-  <div class="page__header">
-    <h2>Procedimentos</h2>
-    <button class="btn btn--primary" (click)="goToNew()">
+  <div class="flex items-center justify-between mb-6">
+    <h2 class="font-display font-bold text-2xl text-ink">Procedimentos</h2>
+    <button
+      (click)="goToNew()"
+      class="bg-primary-500 hover:bg-primary-600 text-white font-semibold text-sm
+             rounded-lg px-4 py-2.5 transition-colors">
       + Novo Procedimento
     </button>
   </div>
 
-  <div class="page__search">
+  <div class="flex gap-3 mb-6">
     <input
       type="text"
       placeholder="Buscar por nome..."
       [(ngModel)]="searchTerm"
-      (keyup.enter)="onSearch()" />
-    <button (click)="onSearch()">Buscar</button>
+      (keyup.enter)="onSearch()"
+      class="flex-1 max-w-sm rounded-lg border border-app-border px-4 py-2.5 text-sm
+             focus:outline-none focus:ring-2 focus:ring-primary-300 focus:border-primary-500
+             transition-colors" />
+    <button
+      (click)="onSearch()"
+      class="bg-white border border-app-border hover:bg-primary-50 text-gray-700
+             font-medium text-sm rounded-lg px-4 py-2.5 transition-colors">
+      Buscar
+    </button>
   </div>
 
   @if (isLoading()) {
-    <p>Carregando...</p>
+    <p class="text-gray-500 text-sm">Carregando...</p>
   }
 
   @if (!isLoading()) {
-    <table class="table">
-      <thead>
-        <tr>
-          <th>Nome</th>
-          <th>Descrição</th>
-          <th>Duração (min)</th>
-          <th>Preço</th>
-          <th>Ações</th>
-        </tr>
-      </thead>
-      <tbody>
-        @for (procedure of procedures(); track procedure.id) {
-          <tr>
-            <td>{{ procedure.name }}</td>
-            <td>{{ procedure.description || '-' }}</td>
-            <td>{{ procedure.estimatedDurationMinutes || '-' }}</td>
-            <td>{{ procedure.price ? ('R$ ' + procedure.price) : '-' }}</td>
-            <td>
-              <button (click)="goToEdit(procedure)">Editar</button>
-              <button (click)="confirmDelete(procedure)">Excluir</button>
-            </td>
+    <div class="bg-white rounded-xl border border-app-border overflow-hidden">
+      <table class="w-full text-sm">
+        <thead>
+          <tr class="bg-primary-50 text-primary-700 text-left">
+            <th class="px-5 py-3 font-semibold">Nome</th>
+            <th class="px-5 py-3 font-semibold">Descrição</th>
+            <th class="px-5 py-3 font-semibold">Duração (min)</th>
+            <th class="px-5 py-3 font-semibold">Preço</th>
+            <th class="px-5 py-3 font-semibold text-right">Ações</th>
           </tr>
-        } @empty {
-          <tr>
-            <td colspan="5">Nenhum procedimento encontrado</td>
-          </tr>
-        }
-      </tbody>
-    </table>
+        </thead>
+        <tbody class="divide-y divide-app-border">
+          @for (procedure of procedures(); track procedure.id) {
+            <tr class="hover:bg-primary-50/40 transition-colors">
+              <td class="px-5 py-3 font-medium text-ink">{{ procedure.name }}</td>
+              <td class="px-5 py-3 text-gray-600">{{ procedure.description || '-' }}</td>
+              <td class="px-5 py-3 text-gray-600">{{ procedure.estimatedDurationMinutes || '-' }}</td>
+              <td class="px-5 py-3 text-gray-600">{{ procedure.price ? ('R$ ' + procedure.price) : '-' }}</td>
+              <td class="px-5 py-3 text-right space-x-2">
+                <button (click)="goToEdit(procedure)" class="text-primary-600 hover:text-primary-700 font-medium">Editar</button>
+                <button (click)="confirmDelete(procedure)" class="text-red-500 hover:text-red-600 font-medium">Excluir</button>
+              </td>
+            </tr>
+          } @empty {
+            <tr>
+              <td colspan="5" class="px-5 py-8 text-center text-gray-400">Nenhum procedimento encontrado</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
   }
 
-  @if (procedureToDelete()) {
-    <div class="modal-overlay">
-      <div class="modal">
-        <h3>Confirmar exclusão</h3>
-        <p>
+  @if (procedureToDelete(); as procedure) {
+    <div class="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
+      <div class="bg-white rounded-xl p-6 w-full max-w-sm shadow-lg">
+        <h3 class="font-display font-bold text-lg text-ink mb-2">Confirmar exclusão</h3>
+        <p class="text-gray-600 text-sm mb-6">
           Tem certeza que deseja excluir o procedimento
-          <strong>{{ procedureToDelete()?.name }}</strong>?
+          <strong class="text-ink">{{ procedure.name }}</strong>?
         </p>
-        <div class="modal__actions">
-          <button (click)="cancelDelete()">Cancelar</button>
-          <button class="btn--danger" (click)="deleteProcedure()">Excluir</button>
+        <div class="flex justify-end gap-3">
+          <button (click)="cancelDelete()" class="px-4 py-2 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-100">Cancelar</button>
+          <button (click)="deleteProcedure()" class="px-4 py-2 rounded-lg text-sm font-semibold text-white bg-red-500 hover:bg-red-600">Excluir</button>
         </div>
       </div>
     </div>

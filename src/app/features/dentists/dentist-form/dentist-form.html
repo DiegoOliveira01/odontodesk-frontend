@@ -1,50 +1,69 @@
-<div class="page">
+<div class="max-w-2xl mx-auto">
 
-  <div class="page__header">
-    <h2>{{ isEditMode() ? 'Editar Dentista' : 'Novo Dentista' }}</h2>
-    <a routerLink="/dentists">Voltar</a>
+  <div class="flex items-center justify-between mb-6">
+    <h2 class="font-display font-bold text-2xl text-ink">
+      {{ isEditMode() ? 'Editar Dentista' : 'Novo Dentista' }}
+    </h2>
+    <a routerLink="/dentists" class="text-sm text-primary-600 hover:text-primary-700 font-medium">← Voltar</a>
   </div>
 
   @if (errorMessage()) {
-    <div class="form-error-box">
+    <div class="bg-red-50 border border-red-200 text-red-700 text-sm rounded-lg px-4 py-3 mb-6">
       {{ errorMessage() }}
     </div>
   }
 
   @if (isLoading()) {
-    <p>Carregando...</p>
+    <p class="text-gray-500 text-sm">Carregando...</p>
   } @else {
 
-    <form [formGroup]="dentistForm" (ngSubmit)="onSubmit()">
+    <form [formGroup]="dentistForm" (ngSubmit)="onSubmit()"
+          class="bg-white rounded-xl border border-app-border p-6 space-y-5">
 
-      <div class="form-group">
-        <label for="name">Nome *</label>
-        <input id="name" type="text" formControlName="name" />
+      <div>
+        <label for="name" class="block text-sm font-medium text-ink mb-1.5">Nome *</label>
+        <input id="name" type="text" formControlName="name"
+               class="w-full rounded-lg border border-app-border px-4 py-2.5 text-sm
+                      focus:outline-none focus:ring-2 focus:ring-primary-300 focus:border-primary-500" />
       </div>
 
-      <div class="form-group">
-        <label for="cro">CRO *</label>
-        <input id="cro" type="text" formControlName="cro" />
+      <div class="grid grid-cols-2 gap-4">
+        <div>
+          <label for="cro" class="block text-sm font-medium text-ink mb-1.5">CRO *</label>
+          <input id="cro" type="text" formControlName="cro"
+                 class="w-full rounded-lg border border-app-border px-4 py-2.5 text-sm
+                        focus:outline-none focus:ring-2 focus:ring-primary-300 focus:border-primary-500" />
+        </div>
+        <div>
+          <label for="specialty" class="block text-sm font-medium text-ink mb-1.5">Especialidade</label>
+          <input id="specialty" type="text" formControlName="specialty"
+                 class="w-full rounded-lg border border-app-border px-4 py-2.5 text-sm
+                        focus:outline-none focus:ring-2 focus:ring-primary-300 focus:border-primary-500" />
+        </div>
       </div>
 
-      <div class="form-group">
-        <label for="specialty">Especialidade</label>
-        <input id="specialty" type="text" formControlName="specialty" />
+      <div class="grid grid-cols-2 gap-4">
+        <div>
+          <label for="phone" class="block text-sm font-medium text-ink mb-1.5">Telefone</label>
+          <input id="phone" type="text" formControlName="phone"
+                 class="w-full rounded-lg border border-app-border px-4 py-2.5 text-sm
+                        focus:outline-none focus:ring-2 focus:ring-primary-300 focus:border-primary-500" />
+        </div>
+        <div>
+          <label for="email" class="block text-sm font-medium text-ink mb-1.5">Email</label>
+          <input id="email" type="email" formControlName="email"
+                 class="w-full rounded-lg border border-app-border px-4 py-2.5 text-sm
+                        focus:outline-none focus:ring-2 focus:ring-primary-300 focus:border-primary-500" />
+        </div>
       </div>
 
-      <div class="form-group">
-        <label for="phone">Telefone</label>
-        <input id="phone" type="text" formControlName="phone" />
+      <div class="pt-2">
+        <button type="submit" [disabled]="isLoading()"
+                class="bg-primary-500 hover:bg-primary-600 disabled:opacity-60
+                       text-white font-semibold text-sm rounded-lg px-6 py-2.5 transition-colors">
+          {{ isEditMode() ? 'Salvar Alterações' : 'Criar Dentista' }}
+        </button>
       </div>
-
-      <div class="form-group">
-        <label for="email">Email</label>
-        <input id="email" type="email" formControlName="email" />
-      </div>
-
-      <button type="submit" [disabled]="isLoading()">
-        {{ isEditMode() ? 'Salvar Alterações' : 'Criar Dentista' }}
-      </button>
 
     </form>
 

@@ -11,6 +11,9 @@ import { FormsModule } from '@angular/forms';
   templateUrl: './procedure-list.html'
 })
 export class ProcedureList {
+isEditMode() {
+throw new Error('Method not implemented.');
+}
 
   private readonly procedureService = inject(ProcedureService);
   private readonly router = inject(Router);

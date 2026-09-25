@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  apiUrl: 'https://seu-backend.railway.app/api'
+  apiUrl: 'https://odontodesk-backend-production.up.railway.app/api'
 };
